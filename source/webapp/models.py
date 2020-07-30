@@ -1,3 +1,4 @@
+from django.core.validators import MinValueValidator
 from django.db import models
 
 DEFAULT_CATEGORY = 'other'
@@ -15,7 +16,7 @@ class Product(models.Model):
     description = models.TextField(max_length=2000, null=True, blank=True, verbose_name='Описание')
     category = models.TextField(max_length=20, choices=CATEGORY_CHOICES,
                                 default=DEFAULT_CATEGORY, verbose_name='Категория')
-    amount = models.IntegerField(verbose_name='Остаток')
+    amount = models.IntegerField(verbose_name='Остаток', validators=[MinValueValidator(0)])
     price = models.DecimalField(verbose_name='Цена', max_digits=7, decimal_places=2)
 
     def __str__(self):
