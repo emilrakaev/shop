@@ -9,7 +9,7 @@
 
 {% block content %}
     <h3>{{ product.name }}</h3>
-    <p>Категория: {{ product.get_status_display }}</p>
+    <p>Категория: {{ product.get_category_display }}</p>
     <p>Осталось: {{ product.amount }} по | {{ product.price }} сом</p>
-    <p class="pre">{{ product.description }}</p>
+    <p>Описание: </p> <pre>{{ product.description }}</pre>
 {% endblock %}

@@ -10,5 +10,4 @@ class ProductForm(forms.Form):
                                  label='Категория')
     amount = forms.IntegerField(min_value=0, required=True, label='Остаток')
     price = forms.DecimalField(min_value=0, max_digits=7, decimal_places=2, required=True, label='Цена')
-# для полей типа DateField
-# publish_at = forms.DateField(..., widget=forms.DateInput(attrs={'type': 'date'}))
+

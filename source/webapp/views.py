@@ -78,7 +78,7 @@ def product_update_view(request, pk):
 def product_delete_view(request, pk):
     product = get_object_or_404(Product, pk=pk)
     if request.method == 'GET':
-        return render(request, 'delete_product.html', context={'product': product})
+        return render(request, 'product_delete.html', context={'product': product})
     elif request.method == 'POST':
         product.delete()
         return redirect('index')
