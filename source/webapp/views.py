@@ -1,13 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseNotAllowed
 from webapp.models import Product
-from webapp.forms import ProductForm
+from webapp.forms import ProductForm, SearchForm
 
 
 def index_view(request):
     data = Product.objects.all()
-    for i in data:
-        print(i.name)
     return render(request, 'index.html', context={
         'products': data
     })
@@ -15,15 +13,16 @@ def index_view(request):
 
 def product_view(request, pk):
     product = get_object_or_404(Product, pk=pk)
-    context = {'product': product}
-    return render(request, 'product_view.html', context)
+    return render(request, 'product_view.html', context = {'product': product})
 
 
 def product_create_view(request):
     if request.method == 'GET':
+        print(ProductForm.name)
         return render(request, 'product_create.html', context={
             'form': ProductForm()
         })
+
     elif request.method == 'POST':
         form = ProductForm(data=request.POST)
         if form.is_valid():
@@ -84,3 +83,11 @@ def product_delete_view(request, pk):
         return redirect('index')
     else:
         return HttpResponseNotAllowed(permitted_methods=['GET', 'POST'])
+
+
+def product_search_view(request):
+    query=request.GET.get("searching")
+    data = Product.objects.filter(name__icontains=query)
+    return render(request, 'product_search.html', context={
+        'products': data
+    })

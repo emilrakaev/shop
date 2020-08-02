@@ -11,3 +11,6 @@ class ProductForm(forms.Form):
     amount = forms.IntegerField(min_value=0, required=True, label='Остаток')
     price = forms.DecimalField(min_value=0, max_digits=7, decimal_places=2, required=True, label='Цена')
 
+
+class SearchForm(forms.Form):
+    search_text = forms.CharField(max_length=100, label='Поиск')
