@@ -1,92 +1,59 @@
+from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseNotAllowed
+from django.urls import reverse, reverse_lazy
+from django.views.generic import DetailView, CreateView, UpdateView, DeleteView
+
+from webapp.base_views import SearchView
 from webapp.models import Product
-from webapp.forms import ProductForm, SearchForm
+from webapp.forms import ProductForm, SimpleSearchForm
 
 
-def index_view(request):
-    data = Product.objects.all()
-    return render(request, 'index.html', context={
-        'products': data
-    })
+class IndexView(SearchView):
+    template_name = 'index.html'
+    context_object_name = 'products'
+    model = Product
+    paginate_by = 3
+    paginate_orphans = 0
+    search_form = SimpleSearchForm
+    ordering = ['category', 'name']
+
+    def get_query(self, search):
+        query = Q(name__icontains=search)
+        return query
 
 
-def product_view(request, pk):
-    product = get_object_or_404(Product, pk=pk)
-    return render(request, 'product_view.html', context = {'product': product})
+class ProductView(DetailView):
+    template_name = 'product_view.html'
+    model = Product
 
 
-def product_create_view(request):
-    if request.method == 'GET':
-        print(ProductForm.name)
-        return render(request, 'product_create.html', context={
-            'form': ProductForm()
-        })
+class ProductCreateView(CreateView):
+    template_name = 'product_create.html'
+    form_class = ProductForm
+    model = Product
 
-    elif request.method == 'POST':
-        form = ProductForm(data=request.POST)
-        if form.is_valid():
-            # product = Product.objects.create(**form.cleaned_data)
-            product = Product.objects.create(
-                name=form.cleaned_data['name'],
-                description=form.cleaned_data['description'],
-                category=form.cleaned_data['category'],
-                amount=form.cleaned_data['amount'],
-                price=form.cleaned_data['price']
-            )
-            return redirect('product_view', pk=product.pk)
-        else:
-            return render(request, 'product_create.html', context={
-                'form': form
-            })
+    def get_success_url(self):
+        return reverse('product_view', kwargs={'pk': self.object.pk})
 
 
-def product_update_view(request, pk):
-    product = get_object_or_404(Product, pk=pk)
-    if request.method == 'GET':
-        form = ProductForm(initial={
-            'name': product.name,
-            'description': product.description,
-            'category': product.category,
-            'amount': product.amount,
-            'price': product.price
-        })
-        return render(request, 'product_update.html', context={
-            'form': form,
-            'product': product
-        })
-    elif request.method == 'POST':
-        form = ProductForm(data=request.POST)
-        if form.is_valid():
-            product.name = form.cleaned_data['name']
-            product.description = form.cleaned_data['description']
-            product.category = form.cleaned_data['category']
-            product.amount = form.cleaned_data['amount']
-            product.price = form.cleaned_data['price']
-            product.save()
-            return redirect('product_view', pk=product.pk)
-        else:
-            return render(request, 'product_update.html', context={
-                'product': product,
-                'form': form
-            })
-    else:
-        return HttpResponseNotAllowed(permitted_methods=['GET', 'POST'])
+class ProductUpdateVIew(UpdateView):
+    template_name = 'product_update.html'
+    model = Product
+    form_class = ProductForm
+
+    def get_success_url(self):
+        return reverse('product_view', kwargs={'pk': self.object.pk})
 
 
-def product_delete_view(request, pk):
-    product = get_object_or_404(Product, pk=pk)
-    if request.method == 'GET':
-        return render(request, 'product_delete.html', context={'product': product})
-    elif request.method == 'POST':
-        product.delete()
-        return redirect('index')
-    else:
-        return HttpResponseNotAllowed(permitted_methods=['GET', 'POST'])
+class ProductDeleteView(DeleteView):
+    template_name = 'product_delete.html'
+    model = Product
+    success_url = reverse_lazy('index')
 
 
 def product_search_view(request):
-    query=request.GET.get("searching")
+    query = request.GET.get("searching")
     data = Product.objects.filter(name__icontains=query)
     return render(request, 'product_search.html', context={
         'products': data

@@ -25,4 +25,9 @@ class Product(models.Model):
     class Meta:
         verbose_name = 'Товар'
         verbose_name_plural = 'Товары'
-        ordering = ('name',)
+        ordering = ['name', 'category']
+
+
+class Basket(models.Model):
+    product = models.ForeignKey('webapp.Product', on_delete=models.CASCADE, related_name='Продукт')
+    quantity = models.IntegerField(verbose_name='Количество')

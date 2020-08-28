@@ -3,11 +3,10 @@
 {% block title %}Shop{% endblock %}
 
 {% block content %}
-    <form action="{% url 'product_search' %}" method="get" class="search-form">
-        <input type="search" placeholder="Введите название" name="searching">
-        <button type="submit">Search</button>
-    </form>
     <h1>Товары:</h1>
+    {% if is_paginated %}
+        {% include 'partial/pagination.html' %}
+    {% endif %}
     {% for product in products %}
         {% if product.amount > 0 %}
             <h3><a href="{% url "product_view" product.pk %}">{{ product.name }}</a></h3>
