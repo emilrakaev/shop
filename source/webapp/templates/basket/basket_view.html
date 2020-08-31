@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Basket view{% endblock %}
+
+{% block menu %}
+    <li><a href="{% url 'index' %}">Cancel</a></li>
+{% endblock %}
+
+{% block content %}
+    {% for basket in baskets %}
+        <h3>{{ basket.product }} {{ basket.product.price }} {{ basket.quantity }} <a href="{% url 'delete_view' basket.pk %}">Delete</a></h3>
+        <p>{{ basket.total }}</p>
+    {% endfor %}
+    <p>Total: {{ all }}</p>
+
+{% endblock %}
