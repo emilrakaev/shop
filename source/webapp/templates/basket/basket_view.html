@@ -7,10 +7,28 @@
 {% endblock %}
 
 {% block content %}
-    {% for basket in baskets %}
-        <h3>{{ basket.product }} {{ basket.product.price }} {{ basket.quantity }} <a href="{% url 'delete_view' basket.pk %}">Delete</a></h3>
-        <p>{{ basket.total }}</p>
-    {% endfor %}
-    <p>Total: {{ all }}</p>
+{% if all %}
 
+
+    <table border="1">
+        <tr>
+            <th>Название</th>
+            <th>Цена</th>
+            <th>Количество</th>
+            <th>Сумма</th>
+        </tr>
+        {% for basket in baskets %}
+            <tr>
+                <td><h3>{{ basket.product.name }}</h3></td>
+                <td><h3>{{ basket.product.price }}</h3></td>
+                <td><h3>{{ basket.quantity }}</h3></td>
+                <td><h3>{{ basket.total }}</h3></td>
+                <td><a href="{% url 'delete_view' basket.pk %}">Delete</a></td>
+            </tr>
+        {% endfor %}
+    </table>
+    <p>Total: {{ all }}</p>
+    {% endif %}
+    {% url 'order_view' as action_url %}
+    {% include 'partial/form.html' with action_url=action_url form_method='post' button_text='Do order' %}
 {% endblock %}

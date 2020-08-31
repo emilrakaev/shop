@@ -99,3 +99,7 @@ body {
     text-align: center;
     border: solid 1px gray;
 }
+
+.tablica {
+    border: 2px solid red;
+}
