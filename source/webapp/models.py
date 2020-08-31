@@ -31,3 +31,9 @@ class Product(models.Model):
 class Basket(models.Model):
     product = models.ForeignKey('webapp.Product', on_delete=models.CASCADE, related_name='Продукт')
     quantity = models.IntegerField(verbose_name='Количество')
+
+    def total(self):
+        return self.quantity * self.product.price
+
+
+

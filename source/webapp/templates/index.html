@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 
 {% block title %}Shop{% endblock %}
+{% block menu %}
+    <li><a href="{% url 'basket_view' %}">Basket</a></li>
+{% endblock %}
 
 {% block content %}
     <h1>Товары:</h1>
@@ -14,6 +17,8 @@
             <p>Цена: {{ product.price }} сом</p>
             <p><a href="{% url 'product_update' product.pk %}">Update</a></p>
             <p><a href="{% url 'product_delete' product.pk %}">Delete</a></p>
+            {% url "add_basket" product.pk as action_url %}
+            {% include 'partial/form.html' with action_url=action_url form_method='post'  %}
         {% endif %}
     {% endfor %}
 {% endblock %}
