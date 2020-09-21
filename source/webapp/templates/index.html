@@ -2,7 +2,8 @@
 
 {% block title %}Shop{% endblock %}
 {% block menu %}
-    <li><a href="{% url 'basket_view' %}">Basket</a></li>
+    <li><a href="{% url 'webapp:basket_view' %}">Basket</a></li>
+    <li><a href="{% url 'webapp:order_list' %}">Orders</a></li>
 {% endblock %}
 
 {% block content %}
@@ -12,12 +13,16 @@
     {% endif %}
     {% for product in products %}
         {% if product.amount > 0 %}
-            <h3><a href="{% url "product_view" product.pk %}">{{ product.name }}</a></h3>
+            <h3><a href="{% url "webapp:product_view" product.pk %}">{{ product.name }}</a></h3>
             <p>Категория: {{ product.get_category_display }} </p>
             <p>Цена: {{ product.price }} сом</p>
-            <p><a href="{% url 'product_update' product.pk %}">Update</a></p>
-            <p><a href="{% url 'product_delete' product.pk %}">Delete</a></p>
-            {% url "add_basket" product.pk as action_url %}
+            {% if perms.webapp.change_product %}
+                <p><a href="{% url 'webapp:product_update' product.pk %}">Update</a></p>
+            {% endif %}
+            {% if perms.webapp.delete_product %}
+                <p><a href="{% url 'webapp:product_delete' product.pk %}">Delete</a></p>
+            {% endif %}
+            {% url "webapp:add_basket" product.pk as action_url %}
             {% include 'partial/form.html' with action_url=action_url form_method='post' button_text='Add basket' %}
         {% endif %}
     {% endfor %}

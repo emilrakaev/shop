@@ -3,7 +3,7 @@
 {% block title %}Basket view{% endblock %}
 
 {% block menu %}
-    <li><a href="{% url 'index' %}">Cancel</a></li>
+    <li><a href="{% url 'webapp:index' %}">Cancel</a></li>
 {% endblock %}
 
 {% block content %}
@@ -21,14 +21,14 @@
             <tr>
                 <td><h3>{{ basket.product.name }}</h3></td>
                 <td><h3>{{ basket.product.price }}</h3></td>
-                <td><h3>{{ basket.quantity }}</h3></td>
+                <td class="text-right"><h3>{{ basket.quantity }}</h3></td>
                 <td><h3>{{ basket.total }}</h3></td>
-                <td><a href="{% url 'delete_view' basket.pk %}">Delete</a></td>
+                <td><a href="{% url 'webapp:delete_view' basket.pk %}">Delete</a></td>
             </tr>
         {% endfor %}
     </table>
-    <p>Total: {{ all }}</p>
+    <p>Total: {{ all|default_if_none:0 }}</p>
     {% endif %}
-    {% url 'order_view' as action_url %}
+    {% url 'webapp:order_view' as action_url %}
     {% include 'partial/form.html' with action_url=action_url form_method='post' button_text='Do order' %}
 {% endblock %}

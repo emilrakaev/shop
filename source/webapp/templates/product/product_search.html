@@ -7,7 +7,7 @@
         <p>Категория: {{ product.get_category_display }}</p>
         <p>Осталось: {{ product.amount }} по | {{ product.price }} сом</p>
         <p>Описание: </p> <pre>{{ product.description }}</pre>
-        <a href="{% url 'product_update' product.pk %}">Update</a>
-        <a href="{% url 'product_delete' product.pk %}">Delete</a>
+        <a href="{% url 'webapp:product_update' product.pk %}">Update</a>
+        <a href="{% url 'webapp:product_delete' product.pk %}">Delete</a>
     {% endfor %}
 {% endblock %}

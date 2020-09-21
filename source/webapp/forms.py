@@ -8,6 +8,12 @@ class ProductForm(forms.ModelForm):
         fields = ['name', 'description', 'category', 'amount', 'price']
 
 
+class BasketAddForm(forms.ModelForm):
+    class Meta:
+        model = Basket
+        fields = ['quantity']
+
+
 class BasketForm(forms.Form):
     quantity = forms.IntegerField(min_value=0, required=True, label='')
 
@@ -20,5 +26,3 @@ class OrderForm(forms.Form):
     name = forms.CharField(max_length=100, required=True, label='Имя')
     phone = forms.CharField(max_length=100, required=True, label='Телефон')
     adress = forms.CharField(max_length=100, required=True, label='Адресс')
-
-
