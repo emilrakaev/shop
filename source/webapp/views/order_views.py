@@ -1,6 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, render
-from django.views.generic import CreateView, ListView
+from django.views.generic import ListView
 from django.views.generic import View
 from webapp.forms import OrderForm
 from webapp.models import Order, Basket, OrderProduct, Product

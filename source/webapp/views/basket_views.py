@@ -1,10 +1,8 @@
 from django.contrib import messages
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse_lazy, reverse
-from django.views.generic import CreateView, DetailView, ListView, DeleteView
-from django.views.generic.base import View
-from django.core.exceptions import ObjectDoesNotExist
-from webapp.forms import BasketForm, OrderForm, BasketAddForm
+from django.views.generic import CreateView, ListView, DeleteView
+from webapp.forms import OrderForm, BasketAddForm
 from webapp.models import Basket, Product
 
 
