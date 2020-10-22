@@ -1,14 +1,12 @@
-from django.db.models import Q
-from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponseNotAllowed
+from datetime import datetime
+
+from django.shortcuts import render
 from django.urls import reverse, reverse_lazy
 from django.views.generic import DetailView, CreateView, UpdateView, DeleteView
 
 from webapp.base_views import SearchView
 from webapp.models import Product
-from webapp.forms import ProductForm, SimpleSearchForm, BasketForm
-
-from django.contrib import messages
+from webapp.forms import ProductForm, BasketForm
 
 
 class IndexView(SearchView):
@@ -27,6 +25,7 @@ class IndexView(SearchView):
     def dispatch(self, request, *args, **kwargs):
         self.test_session_key()
         self.test_session_data()
+
         return super().dispatch(request, *args, **kwargs)
 
     def get_queryset(self):

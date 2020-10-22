@@ -7,7 +7,6 @@ from webapp.models import Order, Basket, OrderProduct, Product
 
 
 class OrderView(View):
-
     def post(self, request, *args, **kwargs):
         form = OrderForm(data=request.POST)
         if form.is_valid():
